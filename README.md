@@ -43,6 +43,59 @@ Each skill follows a consistent structure:
 - **Virtual Threads** + Structured Concurrency
 - **GraalVM Native Image** support
 
+## APM CLI Setup
+
+Before installing this package, you need the APM CLI.
+
+### Requirements
+
+- macOS, Linux, or Windows (x86_64 or ARM64)
+- [git](https://git-scm.com/) for dependency management
+- Python 3.10+ (only for pip or from-source installs)
+
+### Quick Install (recommended)
+
+**macOS / Linux:**
+
+```bash
+curl -sSL https://aka.ms/apm-unix | sh
+```
+
+**Windows (PowerShell):**
+
+```powershell
+irm https://aka.ms/apm-windows | iex
+```
+
+### Package Managers
+
+**Homebrew (macOS/Linux):**
+
+```bash
+brew install microsoft/apm/apm
+```
+
+**Scoop (Windows):**
+
+```powershell
+scoop bucket add apm https://github.com/microsoft/scoop-apm
+scoop install apm
+```
+
+**pip:**
+
+```bash
+pip install apm-cli   # requires Python 3.10+
+```
+
+### Verify Installation
+
+```bash
+apm --version
+```
+
+---
+
 ## Installation
 
 Install in any project using APM CLI:
