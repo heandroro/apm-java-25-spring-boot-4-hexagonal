@@ -94,6 +94,8 @@ pip install apm-cli   # requires Python 3.10+
 apm --version
 ```
 
+For more details, see the [official APM documentation](https://microsoft.github.io/apm/).
+
 ---
 
 ## Installation
