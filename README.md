@@ -135,6 +135,8 @@ For a project that consumes this package:
 3. Keep `apm_modules/` out of version control because it is rebuilt from the lockfile during `apm install`.
 4. Re-run `apm install` after updating dependencies so deployed primitives and the lockfile stay in sync.
 
+This repository includes a minimal `.gitignore` that follows this workflow by excluding `apm_modules/` and common local pack outputs such as `build/`, `dist/`, `release-artifacts/`, and archived bundles.
+
 ## Package Authoring Notes
 
 This repository is the **source package**, so its primitives live under `.apm/` and are meant to be installed into another project with `apm install`.
