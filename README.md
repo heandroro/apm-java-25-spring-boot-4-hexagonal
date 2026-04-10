@@ -43,9 +43,33 @@ Each skill follows a consistent structure:
 - **Virtual Threads** + Structured Concurrency
 - **GraalVM Native Image** support
 
-## Usage
+## Installation
 
-Reference this repository in your AI assistant's context or include the `AGENTS.md` file in your project root.
+Install in any project using APM CLI:
+
+```bash
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+```
+
+APM automatically:
+- Downloads the package to `apm_modules/`
+- Copies instructions to `.github/instructions/`
+- Copies prompts to `.github/prompts/`
+- Updates `apm.yml` with the dependency
+
+## Compile for Other Tools
+
+If you use tools beyond **GitHub Copilot**, **Claude**, **Cursor**, and **OpenCode** (which read deployed primitives natively), generate compiled instruction files:
+
+```bash
+apm compile
+```
+
+This produces:
+- **`AGENTS.md`** — for Codex, Gemini
+- **`CLAUDE.md`** — for tools that need a single instructions file
+
+> **Note:** Copilot, Claude, and Cursor users can skip this step. OpenCode users need `apm compile` only if packages include instructions (OpenCode reads `AGENTS.md` for those).
 
 ## License
 
