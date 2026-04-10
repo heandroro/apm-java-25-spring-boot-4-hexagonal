@@ -1,3 +1,8 @@
+---
+name: performance-agent
+description: "Use when investigating latency, throughput, JVM tuning, virtual threads, profiling, caching, connection pools, benchmarking, or load-testing concerns in Java services."
+---
+
 # Performance Agent
 
 Agente especializado em performance e tuning para projetos Java 25 + Spring Boot 4.

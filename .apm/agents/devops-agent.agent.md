@@ -1,3 +1,8 @@
+---
+name: devops-agent
+description: "Use when working on containerization, CI/CD pipelines, Dockerfiles, Kubernetes manifests, image hardening, health probes, or deployment workflows for Java and Spring Boot services."
+---
+
 # DevOps Agent
 
 Agente especializado em containerização e CI/CD para projetos Java 25 + Spring Boot 4.

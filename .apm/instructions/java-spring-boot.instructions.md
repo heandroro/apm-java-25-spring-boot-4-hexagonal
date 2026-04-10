@@ -1,4 +1,6 @@
 ---
+name: java-spring-boot
+description: "Use when working on Java 25 and Spring Boot 4 code, especially for hexagonal architecture, Spring conventions, DTO design, validation, logging, and testing expectations."
 applyTo: "**/*.java"
 ---
 

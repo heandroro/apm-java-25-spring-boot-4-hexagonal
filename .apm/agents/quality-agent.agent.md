@@ -1,3 +1,8 @@
+---
+name: quality-agent
+description: "Use when reviewing code quality, static analysis findings, Java 25 best practices, Spring Boot conventions, refactoring opportunities, or merge-readiness for production code."
+---
+
 # Quality Agent
 
 Agente especializado em qualidade de código e boas práticas para projetos Java 25 + Spring Boot 4.

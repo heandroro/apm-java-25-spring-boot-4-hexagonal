@@ -1,3 +1,8 @@
+---
+name: test-agent
+description: "Use when creating or reviewing unit tests, integration tests, architecture tests, coverage strategy, Testcontainers setup, or overall test quality for Java and Spring Boot projects."
+---
+
 # Test Agent
 
 Agente especializado em estratégia de testes para projetos Java 25 + Spring Boot 4.
