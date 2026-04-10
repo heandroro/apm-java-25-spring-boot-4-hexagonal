@@ -12,7 +12,7 @@ This repository contains a structured collection of **skills**, **agents**, **in
 .apm/
 ├── agents/           # Specialized AI agents (quality, test, performance, devops)
 ├── instructions/     # Project-wide coding instructions
-├── prompts/          # Reusable prompt templates
+├── prompts/          # Reusable prompt templates, including the review workflow
 └── skills/           # Modular skill packages
     ├── arch-test/        # ArchUnit architecture testing
     ├── best-practices/   # Java 25 idioms, SOLID, Clean Code, MapStruct
@@ -34,6 +34,8 @@ Each skill follows a consistent structure:
 - **`examples/`** — Complete, runnable code examples
 - **`scripts/`** — Maven/Gradle configuration snippets
 - **`references/`** — Concise technical documentation
+
+The code review workflow for this package is defined in `.apm/prompts/review.prompt.md` and uses the detailed checklist in `.apm/skills/code-quality/references/quality-rules.md`.
 
 ## Tech Stack
 
