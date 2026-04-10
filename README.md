@@ -108,9 +108,9 @@ apm install heandroro/apm-java-25-spring-boot-4-hexagonal
 
 APM automatically:
 - Downloads the package to `apm_modules/`
-- Copies instructions to `.github/instructions/`
-- Copies prompts to `.github/prompts/`
-- Updates `apm.yml` with the dependency
+- Resolves dependencies and updates `apm.yml` with the package reference
+- Deploys supported primitives from the package to the native directories your AI tools already watch, such as `.github/`, `.claude/`, `.cursor/`, and `.opencode/`
+- Creates or refreshes the lockfile so the installed agent configuration stays reproducible across machines
 
 ## Compile for Other Tools
 
@@ -124,7 +124,35 @@ This produces:
 - **`AGENTS.md`** — for Codex, Gemini
 - **`CLAUDE.md`** — for tools that need a single instructions file
 
-> **Note:** Copilot, Claude, and Cursor users can skip this step. OpenCode users need `apm compile` only if packages include instructions (OpenCode reads `AGENTS.md` for those).
+> **Note:** Copilot, Claude, Cursor, and OpenCode primarily consume deployed primitives from their native directories after `apm install`. Use `apm compile` when you need generated files for tools that rely on compiled outputs such as `AGENTS.md` or `CLAUDE.md`.
+
+## Day-to-Day Workflow
+
+For a project that consumes this package:
+
+1. Commit `apm.yml` and `apm.lock.yaml` so every contributor gets the same resolved agent configuration.
+2. Commit deployed directories such as `.github/`, `.claude/`, `.cursor/`, and `.opencode/` when your team wants agent context to be available immediately after clone.
+3. Keep `apm_modules/` out of version control because it is rebuilt from the lockfile during `apm install`.
+4. Re-run `apm install` after updating dependencies so deployed primitives and the lockfile stay in sync.
+
+## Package Authoring Notes
+
+This repository is the **source package**, so its primitives live under `.apm/` and are meant to be installed into another project with `apm install`.
+
+- Use `.apm/` as the source of truth for agents, instructions, prompts, and skills.
+- Treat `AGENTS.md` as generated output from `apm compile`, not a hand-edited source file.
+- Expect `apm compile` in this repository to warn that `**/*.java` matches no files, because this package distributes Java guidance but does not contain a Java application itself.
+
+## Distribution Options
+
+If you need to distribute resolved output without requiring APM on the consumer side, use the pack workflow described in the official docs:
+
+```bash
+apm install
+apm pack --archive
+```
+
+This produces a portable bundle of the deployed primitives that can be unpacked or attached to CI and release workflows.
 
 ## License
 
