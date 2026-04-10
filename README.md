@@ -342,7 +342,7 @@ This ensures the project exposes an `AGENTS.md` file with the merged instruction
 
 Recommended practical guidance:
 
-- Keep `AGENTS.md` committed in repositories where Windsurf should immediately see project instructions
+- In consumer repositories, consider keeping `AGENTS.md` committed when Windsurf should immediately see project instructions after clone
 - Prefer `apm compile --verbose` while validating adoption, so you can inspect placement and context-efficiency output
 - If the same repository is also used with GitHub Copilot, keeping `.github/` alongside `AGENTS.md` is reasonable, but the Windsurf-safe fallback remains the compiled root file
 
@@ -392,17 +392,19 @@ For a project that consumes this package:
 
 1. Commit `apm.yml` and `apm.lock.yaml` so every contributor gets the same resolved agent configuration.
 2. Commit deployed directories such as `.github/`, `.claude/`, `.cursor/`, and `.opencode/` when your team wants agent context to be available immediately after clone.
-3. Keep `apm_modules/` out of version control because it is rebuilt from the lockfile during `apm install`.
-4. Re-run `apm install` after updating dependencies so deployed primitives and the lockfile stay in sync.
+3. If your workflow depends on compiled root files such as `AGENTS.md` or `CLAUDE.md`, you may also commit them in consumer repositories.
+4. Keep `apm_modules/` out of version control because it is rebuilt from the lockfile during `apm install`.
+5. Re-run `apm install` after updating dependencies so deployed primitives and the lockfile stay in sync.
 
-This repository includes a minimal `.gitignore` that follows this workflow by excluding `apm_modules/` and common local pack outputs such as `build/`, `dist/`, `release-artifacts/`, and archived bundles.
+This repository includes a minimal `.gitignore` that follows this workflow by excluding `apm_modules/`, generated compile artifacts, and common local pack outputs such as `build/`, `dist/`, `release-artifacts/`, and archived bundles.
 
 ## Package Authoring Notes
 
 This repository is the **source package**, so its primitives live under `.apm/` and are meant to be installed into another project with `apm install`.
 
 - Use `.apm/` as the source of truth for agents, instructions, prompts, and skills.
-- Treat `AGENTS.md` as generated output from `apm compile`, not a hand-edited source file.
+- Treat `AGENTS.md` and `CLAUDE.md` as generated output from `apm compile`, not hand-edited source files.
+- Do not version compiled artifacts in this source repository; regenerate them on demand from `.apm/` sources.
 - Expect `apm compile` in this repository to warn that `**/*.java` matches no files, because this package distributes Java guidance but does not contain a Java application itself.
 
 ## Distribution Options

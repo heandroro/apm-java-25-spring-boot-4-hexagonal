@@ -1,6 +1,10 @@
 # APM local dependency cache
 apm_modules/
 
+# Generated compile artifacts
+AGENTS.md
+CLAUDE.md
+
 # APM bundle and pack outputs
 build/
 dist/
