@@ -416,6 +416,40 @@ apm pack --archive
 
 This produces a portable bundle of the deployed primitives that can be unpacked or attached to CI and release workflows.
 
+## Versioning And Releases
+
+This package uses the version declared in `apm.yml` as its package version:
+
+```yml
+name: poc-apm
+version: 1.0.0
+```
+
+Recommended release workflow:
+
+1. Update the `version` field in `apm.yml` using semantic versioning.
+2. Commit the version change together with the package changes that belong to that release.
+3. Create a Git tag that matches the package version, for example `v1.0.0`.
+4. Push the branch and the tag to the remote repository.
+
+Example:
+
+```bash
+git add apm.yml README.md .apm/ SKILL.md
+git commit -m "release: v1.0.0"
+git tag v1.0.0
+git push origin main
+git push origin v1.0.0
+```
+
+For consumers of the package, the recommended form is to install a tagged version rather than relying on a moving branch:
+
+```bash
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal#v1.0.0
+```
+
+This makes dependency resolution reproducible and aligns the installed package ref with the package metadata declared in `apm.yml`.
+
 ## License
 
 MIT License
