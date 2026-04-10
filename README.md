@@ -126,6 +126,266 @@ This produces:
 
 > **Note:** Copilot, Claude, Cursor, and OpenCode primarily consume deployed primitives from their native directories after `apm install`. Use `apm compile` when you need generated files for tools that rely on compiled outputs such as `AGENTS.md` or `CLAUDE.md`.
 
+### Understanding `Context efficiency`
+
+When `apm compile` prints `Context efficiency`, it is reporting how much of the inherited instruction context is actually relevant to the files covered by the generated output.
+
+Conceptually:
+
+```text
+Context efficiency = relevant instructions / total inherited instructions
+```
+
+Higher values mean less context pollution. In other words, the agent sees a higher proportion of instructions that are actually useful for the files in that part of the project.
+
+Practical interpretation:
+
+- `80-100%` — excellent locality
+- `60-80%` — good optimization
+- `40-60%` — acceptable
+- `20-40%` — poor locality
+- `0-20%` — critical or heavily root-biased placement
+
+Important: a low value is not automatically a problem. The compiler always prioritizes complete coverage over efficiency, so some cross-cutting instructions must remain at the root.
+
+In this repository specifically, low or even `0.0%` efficiency is expected during local compilation because this is a source package, not a Java application. The main instruction pattern is `**/*.java`, but the repository itself does not contain Java source files to benefit from localized placement. As a result, the compiler falls back to root placement and the efficiency metric is not representative here.
+
+To evaluate the metric in a meaningful way, install this package into a real Java project and run:
+
+```bash
+apm install
+apm compile --verbose
+```
+
+That gives a realistic view of how well the generated context matches the actual project structure.
+
+Example output in this repository:
+
+```text
+Generated 1 AGENTS.md file
++- Context efficiency:    0.0%
++- Generation time:       4ms
+
+[!] Warning: Pattern '**/*.java' matches no files - placing at project root
+```
+
+In this case, `0.0%` does not indicate a broken package. It reflects that the package defines Java-specific instructions, but this repository contains package sources rather than Java application files.
+
+## Using With Different LLM Tools
+
+The package can be consumed by several tools, but the setup model is not identical across them.
+
+The safe rule is:
+
+1. Create the target tool directory in the consumer project.
+2. Run `apm install`.
+3. Run `apm compile` only when the tool depends on compiled instruction files such as `AGENTS.md` or `CLAUDE.md`.
+
+### GitHub Copilot in VS Code
+
+Recommended when you want native support for prompts, agents, instructions, and skills.
+
+```bash
+mkdir -p .github
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+```
+
+APM deploys package content into the native VS Code structure:
+
+- `.github/instructions/` for `.instructions.md`
+- `.github/prompts/` for `.prompt.md`
+- `.github/agents/` for `.agent.md`
+- `.github/skills/` for package skills and promoted sub-skills
+
+Use `apm compile` only if you also want merged instruction output in `AGENTS.md`.
+
+### GitHub Copilot in Other IDEs
+
+For JetBrains, Visual Studio, and other IDEs that rely on GitHub Copilot file-level discovery, the practical setup is the same as VS Code because APM deploys to `.github/`.
+
+```bash
+mkdir -p .github
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+```
+
+If your Copilot environment does not pick up granular primitives reliably, add:
+
+```bash
+apm compile --target copilot
+```
+
+### Claude Code
+
+Claude Code reads deployed primitives natively, so `apm compile` is optional.
+
+```bash
+mkdir -p .claude
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+```
+
+APM maps the package into Claude-native paths such as:
+
+- `.claude/rules/` for instructions
+- `.claude/commands/` for prompts
+- `.claude/agents/` for agents
+- `.claude/skills/` for skills
+
+If you want a single compiled instruction file for Claude-oriented tools, generate it with:
+
+```bash
+apm compile --target claude
+```
+
+### Claude Desktop
+
+Use the same `.claude/` deployment model as Claude Code, but prefer compiling a `CLAUDE.md` if you want a single project instruction file.
+
+```bash
+mkdir -p .claude
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+apm compile --target claude
+```
+
+### Cursor
+
+Cursor supports native deployed primitives, with `AGENTS.md` as a useful fallback.
+
+```bash
+mkdir -p .cursor
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+```
+
+APM deploys into paths such as:
+
+- `.cursor/rules/` for instructions converted to Cursor rule format
+- `.cursor/agents/` for agents
+- `.cursor/skills/` for skills
+
+If you want merged project-level instructions as a fallback, run:
+
+```bash
+apm compile --target copilot
+```
+
+### OpenCode
+
+OpenCode consumes native deployed agents, commands, and skills, but uses `AGENTS.md` for instructions.
+
+```bash
+mkdir -p .opencode
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+apm compile --target copilot
+```
+
+Expected output:
+
+- `.opencode/agents/` for agents
+- `.opencode/commands/` for prompts converted to command format
+- `.opencode/skills/` for skills
+- `AGENTS.md` for instructions
+
+### Codex CLI
+
+Codex needs native deployment for skills and agents plus compiled instructions via `AGENTS.md`.
+
+```bash
+mkdir -p .codex
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+apm compile --target codex
+```
+
+Expected output:
+
+- `.agents/skills/` for skills
+- `.codex/agents/` for converted agent files
+- `.codex/hooks.json` when hook packages are present
+- `AGENTS.md` for compiled instructions
+
+### Devin
+
+Devin is not documented by APM as having a dedicated native target like `.github/`, `.claude/`, `.cursor/`, or `.opencode/`. The safest integration pattern is therefore to expose project guidance through compiled repository-level files.
+
+Recommended setup in a consumer project:
+
+```bash
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+apm compile
+```
+
+Recommended artifacts to keep in the repository for Devin sessions:
+
+- `AGENTS.md` as the main compiled instruction file
+- `README.md` for package and workflow documentation
+- `.github/` if the same repository is also used with GitHub Copilot or other tools that understand native deployed primitives
+
+If Devin is running in an environment where you want prebuilt context without requiring APM installation at session time, prepare a bundle in advance:
+
+```bash
+apm install
+apm pack --archive
+```
+
+This lets you distribute the resolved context as an artifact and unpack it before or during the Devin workflow.
+
+### Windsurf
+
+APM documentation currently mentions Windsurf as planned integration, not as a first-class native target like `.github/`, `.claude/`, `.cursor/`, `.opencode/`, or `.codex/`. Because of that, the safest recommendation is to use compiled instruction output.
+
+Recommended setup in a consumer project:
+
+```bash
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+apm compile
+```
+
+This ensures the project exposes an `AGENTS.md` file with the merged instructions.
+
+Recommended practical guidance:
+
+- Keep `AGENTS.md` committed in repositories where Windsurf should immediately see project instructions
+- Prefer `apm compile --verbose` while validating adoption, so you can inspect placement and context-efficiency output
+- If the same repository is also used with GitHub Copilot, keeping `.github/` alongside `AGENTS.md` is reasonable, but the Windsurf-safe fallback remains the compiled root file
+
+If APM later adds official Windsurf target support, this section should be updated to reflect the native integration path instead of the compile-based fallback.
+
+### Gemini And Other AGENTS.md Consumers
+
+For tools that mainly understand a compiled `AGENTS.md`, install the package and compile the instructions.
+
+```bash
+apm install heandroro/apm-java-25-spring-boot-4-hexagonal
+apm compile
+```
+
+In this mode, `AGENTS.md` is the main integration artifact.
+
+### APM Runtime Setup
+
+If you also want APM to manage the local runtime used to execute prompts and scripts, you can provision supported runtimes explicitly.
+
+```bash
+apm runtime setup copilot
+apm runtime setup codex
+apm runtime setup llm
+```
+
+Use cases:
+
+- `copilot` for GitHub Copilot CLI workflows
+- `codex` for Codex CLI workflows
+- `llm` for the generic `llm` CLI with provider-specific API keys
+
+### Recommended Matrix
+
+For most teams, use the following combinations:
+
+- GitHub Copilot or VS Code: `.github/` + `apm install`
+- Claude Code: `.claude/` + `apm install`
+- Cursor: `.cursor/` + `apm install`
+- OpenCode: `.opencode/` + `apm install` + `apm compile`
+- Codex CLI: `.codex/` + `apm install` + `apm compile --target codex`
+- Gemini or single-file instruction consumers: `apm install` + `apm compile`
+
 ## Day-to-Day Workflow
 
 For a project that consumes this package:
