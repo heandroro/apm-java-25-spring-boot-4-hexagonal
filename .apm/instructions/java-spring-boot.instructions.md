@@ -30,6 +30,7 @@ applyTo: "**/*.java"
 - HTTP clients via `RestClient` or `@HttpExchange` interfaces
 - Observability via Micrometer + OpenTelemetry
 - Virtual Threads enabled: `spring.threads.virtual.enabled=true`
+- **`@Bean`** apenas para objetos transversais ou de infraestrutura, encoders, clients e factories.
 
 ## Architecture
 

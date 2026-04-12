@@ -69,6 +69,7 @@ Meta-guia de padrões e boas práticas para projetos Java 25 + Spring Boot 4. Es
 - **RestClient** como padrão para chamadas HTTP síncronas.
 - **ProblemDetail** para respostas de erro padronizadas (RFC 9457).
 - **Observabilidade** nativa com Micrometer e OTel.
+- **`@Bean`** apenas para objetos transversais ou de infraestrutura, encoders, clients e factories.
 
 ### Arquitetura Hexagonal
 - **Domain**: Lógica pura, sem dependências de frameworks.
