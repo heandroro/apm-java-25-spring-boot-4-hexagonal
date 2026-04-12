@@ -71,6 +71,11 @@ Meta-guia de padrões e boas práticas para projetos Java 25 + Spring Boot 4. Es
 - **Observabilidade** nativa com Micrometer e OTel.
 - **`@Bean`** apenas para objetos transversais ou de infraestrutura, encoders, clients e factories.
 
+### Requisitos para Componentes Spring
+- Classes anotadas com `@Component`, `@Service` e `@RestController` devem implementar interface.
+- Regra obrigatória em code review.
+- Não conformidade é bloqueante para merge.
+
 ### Arquitetura Hexagonal
 - **Domain**: Lógica pura, sem dependências de frameworks.
 - **Application**: Casos de uso e orquestração.
