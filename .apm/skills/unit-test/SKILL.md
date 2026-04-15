@@ -47,6 +47,7 @@ Skill para testes unitários em projetos Java 25 + Spring Boot 4 com foco em iso
 ## Estrutura de teste
 
 - `@ExtendWith(MockitoExtension.class)` + `@Mock` + `@InjectMocks` — estrutura base.
+- Para controllers servlet com Spring Boot 4, preferir `MockMvcBuilders` com setup explícito do controller, mocks dos casos de uso e `setControllerAdvice(new ApiExceptionHandler())` para incluir o `@RestControllerAdvice` global.
 - Padrão BDD: `given(...)` / `when` / `then(...)` com BDDMockito.
 - Um assert lógico por teste; `@Nested` para agrupar cenários.
 - Ver `examples/OrderServiceTest.java` para implementação completa.

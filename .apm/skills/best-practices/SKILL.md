@@ -66,21 +66,29 @@ Meta-guia de padrões e boas práticas para projetos Java 25 + Spring Boot 4. Es
 
 ### Spring Boot 4 Patterns
 - **Constructor Injection** obrigatório (evitar `@Autowired`).
+- **Component Scan Primeiro**: prefira estereótipos do Spring a registrar casos de uso manualmente via `@Bean`.
+- **Use Cases = `@Component`** quando precisarem ser gerenciados pelo Spring.
+- **`@Repository`** apenas para adapters de persistência.
+- **`@Bean`** apenas para objetos transversais ou de infraestrutura, como `Clock`, encoders, clients e factories.
 - **RestClient** como padrão para chamadas HTTP síncronas.
 - **ProblemDetail** para respostas de erro padronizadas (RFC 9457).
 - **Observabilidade** nativa com Micrometer e OTel.
-- **`@Bean`** apenas para objetos transversais ou de infraestrutura, encoders, clients e factories.
-
-### Requisitos para Componentes Spring
-- Classes anotadas com `@Component`, `@Service` e `@RestController` devem implementar interface.
-- Regra obrigatória em code review.
-- Não conformidade é bloqueante para merge.
 
 ### Arquitetura Hexagonal
 - **Domain**: Lógica pura, sem dependências de frameworks.
-- **Application**: Casos de uso e orquestração.
+- **Application**: Casos de uso e orquestração. Pode usar `@Component` para integração com DI, sem assumir responsabilidades de adapter.
 - **Infrastructure**: Implementações técnicas (JPA, Clients).
 - **Adapters**: Entrada e saída (REST, Messaging).
+
+### Fronteiras de Controllers
+- Separe controllers REST por **recurso**, **subrecurso** ou **workflow HTTP** quando a classe começar a misturar responsabilidades.
+- Não crie um controller por caso de uso apenas para reduzir construtor; o corte deve refletir a fronteira da API.
+- Preserve as rotas públicas existentes ao extrair controllers menores.
+
+### Registro de Beans
+- Não centralize dezenas de casos de uso em uma única classe `@Configuration`.
+- Se o tipo já está sob o pacote escaneado pela aplicação e usa apenas injeção por construtor, prefira anotá-lo corretamente e deixar o container resolvê-lo.
+- Revise classes `@Configuration` periodicamente para garantir que elas exponham apenas beans que realmente exigem instanciação explícita.
 
 ## Convenções de Projeto
 

@@ -25,24 +25,34 @@ applyTo: "**/*.java"
 ## Spring Conventions
 
 - Constructor injection only — never use `@Autowired` on fields
+- Prefer component scanning for application services and adapters instead of manual `@Bean` registration
+- Use `@Component` for application-layer use cases when they need to be Spring-managed
+- Use `@Service` only when the type is an explicit domain/application service rather than a single use case
+- Use `@Repository` only for persistence adapters and repository implementations
+- Keep `@Bean` methods restricted to infrastructure/transversal objects such as `Clock`, `PasswordEncoder`, HTTP clients, and external SDK/configuration factories
 - `@ConfigurationProperties` bound to record classes
 - Error handling via `ProblemDetail` (RFC 9457)
 - HTTP clients via `RestClient` or `@HttpExchange` interfaces
 - Observability via Micrometer + OpenTelemetry
 - Virtual Threads enabled: `spring.threads.virtual.enabled=true`
-- **`@Bean`** apenas para objetos transversais ou de infraestrutura, encoders, clients e factories.
 
 ## Architecture
 
 - Hexagonal / Ports & Adapters architecture
 - Domain layer: entities, value objects, repository interfaces, domain services — no framework dependencies
 - Application layer: use cases, ports, DTOs
+- Application use cases may use Spring stereotypes for DI, but should remain free of web/persistence concerns
 - Infrastructure layer: persistence, HTTP clients, messaging, configuration
+- Infrastructure configuration should not become a registry of application use cases already discoverable by component scan
 - Adapter layer: REST controllers, JPA implementations, message listeners
+- Split REST controllers by HTTP resource, subresource, or workflow responsibility when mixed concerns start to accumulate
+- Do not split controllers one-per-use-case unless that boundary is also visible in the HTTP API
 
 ## Testing
 
 - JUnit 6 + Mockito 5 + AssertJ for unit tests
+- Use `MockMvc` for servlet controller tests
+- In MockMvc controller tests, include the global `@RestControllerAdvice` explicitly in the setup so `ProblemDetail` and error mapping are exercised
 - Testcontainers + WireMock for integration tests
 - ArchUnit for architecture validation
 - JaCoCo coverage ≥ 80%

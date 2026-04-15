@@ -37,7 +37,8 @@ Skill para testes de integração em projetos Java 25 + Spring Boot 4 com infrae
 - `@SpringBootTest(webEnvironment = RANDOM_PORT)` — sobe contexto Spring completo na porta aleatória.
 - `@Container` + `@ServiceConnection` — injeta propriedades do container automaticamente (sem `@DynamicPropertySource`).
 - `static` container — compartilhado entre todos os testes da classe.
-- `WebTestClient` para HTTP; `MockMvc` para testes servlet-layer.
+- `MockMvc` para testes servlet-layer com setup explícito via `MockMvcBuilders` e inclusão do `@RestControllerAdvice` global no setup.
+- `WebTestClient` ou cliente HTTP real para smoke/integration HTTP fim a fim.
 - `@DataJpaTest` para testar repositórios com slice mínimo do contexto.
 
 ## WireMock para APIs externas
