@@ -9,7 +9,7 @@ Skill para containerização de aplicações Java 25 + Spring Boot 4.
 
 ## Recursos Bundled
 
-### `examples/` — Código de Exemplo
+### `assets/` — Templates de Configuração
 | Arquivo | Conteúdo |
 |---------|----------|
 | `Dockerfile-multi-stage` | Multi-stage build com layer extraction e non-root user |
@@ -40,7 +40,7 @@ Skill para containerização de aplicações Java 25 + Spring Boot 4.
 - Non-root user: `addgroup --system app && adduser --system --ingroup app app`.
 - JVM flags no `ENTRYPOINT`: `-XX:+UseZGC -XX:MaxRAMPercentage=75.0`.
 
-Ver `examples/Dockerfile-multi-stage` e `references/dockerfile-guide.md`.
+Ver `assets/Dockerfile-multi-stage` e `references/dockerfile-guide.md`.
 
 ## Jib (sem Dockerfile)
 
@@ -56,18 +56,18 @@ Ver `examples/Dockerfile-multi-stage` e `references/dockerfile-guide.md`.
 
 ## GraalVM Native + Distroless
 
-Ver `examples/Dockerfile-native` — imagem ~50MB, startup < 100ms.
+Ver `assets/Dockerfile-native` — imagem ~50MB, startup < 100ms.
 
 ## Health Probes (Kubernetes)
 
 - Habilitar no `application.yml`: `management.endpoint.health.probes.enabled=true`.
 - Grupos: `liveness` inclui `livenessState`; `readiness` inclui `readinessState,db,redis`.
-- Ver `examples/kubernetes-probes.yml` para configuração Spring Boot + Kubernetes deployment.
+- Ver `assets/kubernetes-probes.yml` para configuração Spring Boot + Kubernetes deployment.
 
 ## Análise de imagem com Dive
 
 - `brew install dive` + `dive registry.example.com/app:latest` para inspecionar layers localmente.
-- Em CI: `dive build -t app:latest . --ci` com `.dive-ci.yaml` (ver `examples/kubernetes-probes.yml`).
+- Em CI: `dive build -t app:latest . --ci` com `.dive-ci.yaml` (ver `assets/kubernetes-probes.yml`).
 
 ### O que o dive revela
 
@@ -81,7 +81,7 @@ Ver `examples/Dockerfile-native` — imagem ~50MB, startup < 100ms.
 
 - JARs de aplicação na última camada (frequentemente modificada); dependências em camadas anteriores (cache-friendly).
 - `RUN apt-get ... && rm -rf /var/lib/apt/lists/*` em único `RUN` — arquivos deletados em camadas posteriores ainda ocupam espaço.
-- CI/CD: `wagoodman/dive-action@v1` com `config-file: .dive-ci.yaml` (ver `examples/kubernetes-probes.yml`).
+- CI/CD: `wagoodman/dive-action@v1` com `config-file: .dive-ci.yaml` (ver `assets/kubernetes-probes.yml`).
 
 ## Boas práticas de imagem
 

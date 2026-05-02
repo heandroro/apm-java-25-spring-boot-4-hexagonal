@@ -13,17 +13,25 @@ This repository contains a structured collection of **skills**, **agents**, **in
 ├── agents/           # Specialized AI agents (quality, test, performance, devops)
 ├── instructions/     # Project-wide coding instructions
 ├── prompts/          # Reusable prompt templates, including the review workflow
-└── skills/           # Modular skill packages
-    ├── arch-test/        # ArchUnit architecture testing
-    ├── best-practices/   # Java 25 idioms, SOLID, Clean Code, MapStruct
-    ├── code-quality/     # Checkstyle, SpotBugs, PMD, Error Prone, NullAway
-    ├── container/        # Dockerfile, Jib, Buildpacks, GraalVM Native
-    ├── integration-test/ # Testcontainers, WireMock, Spring Boot Test
-    ├── local-test/       # Docker Compose, Testcontainers Desktop
-    ├── observability/    # Actuator, Micrometer, Prometheus, OpenTelemetry
-    ├── stress-test/      # Gatling, JMH, k6
-    ├── tuning/           # JVM flags, Virtual Threads, caching, pools
-    └── unit-test/        # JUnit 6, Mockito 5, AssertJ, Instancio, DataFaker
+└── skills/           # Domain-grouped skill packages (Option 4: Multi-skill Package)
+    ├── java-quality/     # PROMOTED — group: best-practices, code-quality
+    │   ├── SKILL.md
+    │   ├── best-practices/
+    │   └── code-quality/
+    ├── java-testing/     # PROMOTED — group: unit-test, integration-test, arch-test, local-test
+    │   ├── SKILL.md
+    │   ├── unit-test/
+    │   ├── integration-test/
+    │   ├── arch-test/
+    │   └── local-test/
+    ├── java-performance/ # PROMOTED — group: tuning, stress-test
+    │   ├── SKILL.md
+    │   ├── tuning/
+    │   └── stress-test/
+    └── java-operations/  # PROMOTED — group: observability, container
+        ├── SKILL.md
+        ├── observability/
+        └── container/
 ```
 
 ## Skill Format
@@ -31,28 +39,23 @@ This repository contains a structured collection of **skills**, **agents**, **in
 Each skill follows a consistent structure:
 
 - **`SKILL.md`** — Meta-guide with bundled resources table
-- **`examples/`** — Complete, runnable code examples
+- **`examples/`** — Complete, runnable code examples (Java source)
 - **`scripts/`** — Maven/Gradle configuration snippets
 - **`references/`** — Concise technical documentation
+- **`assets/`** — Configuration templates ready to copy (YAML, XML, Dockerfiles)
 
 ## Sub-skills
 
-When installed, each sub-skill is promoted to `.github/skills/<name>/SKILL.md` (and equivalent paths for `.claude/`, `.cursor/`, `.opencode/`) so AI tools can discover them independently.
+Sub-skills are grouped into 4 domain groups. Each group is promoted to `.github/skills/<name>/SKILL.md` (and equivalent paths for `.claude/`, `.cursor/`, `.opencode/`) on install, with its sub-domains bundled inside.
 
-| Sub-skill | Purpose |
-|-----------|---------|
-| `best-practices` | Java 25 idioms, SOLID, Clean Code, Rich Domain, MapStruct, Streams, Virtual Threads, JSpecify |
-| `code-quality` | Static analysis with Checkstyle, SpotBugs, PMD, Error Prone, NullAway, SonarQube, Google Java Format |
-| `unit-test` | JUnit 6, Mockito 5, AssertJ, JaCoCo ≥ 90%, Instancio, DataFaker |
-| `integration-test` | Testcontainers, WireMock, Spring Boot Test, REST Assured, WebTestClient |
-| `arch-test` | ArchUnit architecture rules for hexagonal / ports-and-adapters layers |
-| `tuning` | JVM flags, GraalVM Native Image, Virtual Threads, HikariCP, Caffeine, Redis caching |
-| `stress-test` | Load testing with Gatling 4, JMH microbenchmarks, k6, SLA assertions |
-| `observability` | Actuator, Micrometer, Prometheus, OpenTelemetry, distributed tracing, structured logs |
-| `container` | Dockerfile multi-stage, Jib, Cloud Native Buildpacks, GraalVM Distroless, Kubernetes probes |
-| `local-test` | Docker Compose, Testcontainers Desktop, Spring Profiles, Spring Boot DevTools |
+| Group skill | Bundled sub-domains | Purpose |
+|-------------|---------------------|---------|
+| `java-quality` | `best-practices`, `code-quality` | Java 25 idioms, SOLID, Clean Code, static analysis, null safety, formatting |
+| `java-testing` | `unit-test`, `integration-test`, `arch-test`, `local-test` | Full testing pyramid — unit, integration, architecture, and local environment |
+| `java-performance` | `tuning`, `stress-test` | JVM tuning, Virtual Threads, caching, load testing with Gatling/JMH/k6 |
+| `java-operations` | `observability`, `container` | Micrometer, OpenTelemetry, Prometheus, Dockerfile, Jib, Kubernetes probes |
 
-The code review workflow for this package is defined in `.apm/prompts/review.prompt.md` and uses the detailed checklist in `.apm/skills/code-quality/references/quality-rules.md`.
+The code review workflow for this package is defined in `.apm/prompts/review.prompt.md` and uses the detailed checklist in `.apm/skills/java-quality/code-quality/references/quality-rules.md`.
 
 ## Tech Stack
 
@@ -442,8 +445,8 @@ This produces a portable bundle of the deployed primitives that can be unpacked 
 This package uses the version declared in `apm.yml` as its package version:
 
 ```yml
-name: poc-apm
-version: 1.0.0
+name: apm-java-25-spring-boot-4-hexagonal
+version: 0.1.0
 ```
 
 Recommended release workflow:

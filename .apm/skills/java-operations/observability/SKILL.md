@@ -13,6 +13,10 @@ Skill para observabilidade completa em projetos Java 25 + Spring Boot 4 — mét
 | Arquivo | Conteúdo |
 |---------|----------|
 | `ObservabilityExamples.java` | HealthIndicator, ReactiveHealthIndicator, métricas customizadas, @Observed |
+
+### `assets/` — Templates de Configuração
+| Arquivo | Conteúdo |
+|---------|----------|
 | `observability-config.yml` | application.yml completo com Actuator, Micrometer, tracing |
 | `alerting-rules.yml` | Prometheus scrape config + Alertmanager rules |
 | `logback-spring.xml` | Logging JSON (prod) e texto (local) com trace ID |
@@ -40,7 +44,7 @@ Ver `scripts/maven-observability.xml` para lista completa de dependências.
 - Grupos: `liveness` (livenessState), `readiness` (readinessState, db, redis, kafka).
 - Tags obrigatórias: `application`, `environment`, `region`.
 
-Ver `examples/observability-config.yml` para configuração completa.
+Ver `assets/observability-config.yml` para configuração completa.
 
 ## Health Probes
 
@@ -64,7 +68,7 @@ Ver `examples/ObservabilityExamples.java` para implementação.
 - Trace ID automaticamente incluído via MDC (`%X{traceId}`).
 - `StructuredArguments.kv("orderId", id)` para campos adicionais.
 
-Ver `examples/logback-spring.xml` para configuração.
+Ver `assets/logback-spring.xml` para configuração.
 
 ## Distributed Tracing
 
@@ -96,7 +100,7 @@ Ver `examples/ObservabilityExamples.java` para implementação.
 - **Prometheus**: scrape `/actuator/prometheus` a cada 15s.
 - **Alertas recomendados**: HighErrorRate (>1%), SlowResponseTimeP99 (>500ms), HighMemoryUsage (>85%), ApplicationDown.
 
-Ver `examples/alerting-rules.yml` para configuração completa de Prometheus + Alertmanager.
+Ver `assets/alerting-rules.yml` para configuração completa de Prometheus + Alertmanager.
 
 ## Convenções
 

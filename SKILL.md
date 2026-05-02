@@ -1,9 +1,9 @@
 ---
-name: poc-apm
+name: apm-java-25-spring-boot-4-hexagonal
 description: APM package for Java 25 and Spring Boot 4 with instructions, prompts, agents, and specialized sub-skills for quality, testing, performance, observability, and containerization.
 ---
 
-# POC APM Package
+# apm-java-25-spring-boot-4-hexagonal
 
 Package-level guide for using this APM package in Java 25 + Spring Boot 4 projects.
 
@@ -20,20 +20,14 @@ It combines:
 
 ## Sub-skills
 
-Each sub-skill is promoted to a top-level `.github/skills/<name>/` entry on install, making it independently discoverable.
+Sub-skills are grouped into 4 domain groups. Each group is promoted to a top-level `.github/skills/<name>/` entry on install, with its sub-domains bundled inside.
 
-| Sub-skill | Purpose |
-|-----------|---------|
-| `best-practices` | Java 25 idioms, SOLID, Clean Code, Rich Domain, MapStruct, Streams, Virtual Threads, JSpecify |
-| `code-quality` | Static analysis with Checkstyle, SpotBugs, PMD, Error Prone, NullAway, SonarQube, Google Java Format |
-| `unit-test` | JUnit 6, Mockito 5, AssertJ, JaCoCo ≥ 90%, Instancio, DataFaker |
-| `integration-test` | Testcontainers, WireMock, Spring Boot Test, REST Assured, WebTestClient |
-| `arch-test` | ArchUnit architecture rules for hexagonal / ports-and-adapters layers |
-| `tuning` | JVM flags, GraalVM Native Image, Virtual Threads, HikariCP, Caffeine, Redis |
-| `stress-test` | Load testing with Gatling 4, JMH microbenchmarks, k6, SLA assertions |
-| `observability` | Actuator, Micrometer, Prometheus, OpenTelemetry, distributed tracing, structured logs |
-| `container` | Dockerfile multi-stage, Jib, Cloud Native Buildpacks, GraalVM Distroless, Kubernetes probes |
-| `local-test` | Docker Compose, Testcontainers Desktop, Spring Profiles, Spring Boot DevTools |
+| Group skill | Bundled sub-domains | Purpose |
+|-------------|---------------------|---------|
+| `java-quality` | `best-practices`, `code-quality` | Java 25 idioms, SOLID, Clean Code, static analysis, null safety, formatting |
+| `java-testing` | `unit-test`, `integration-test`, `arch-test`, `local-test` | Full testing pyramid — unit, integration, architecture, and local environment |
+| `java-performance` | `tuning`, `stress-test` | JVM tuning, Virtual Threads, caching, load testing with Gatling/JMH/k6 |
+| `java-operations` | `observability`, `container` | Micrometer, OpenTelemetry, Prometheus, Dockerfile, Jib, Kubernetes probes |
 
 ## How To Use
 
