@@ -1,16 +1,59 @@
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.assertj.core.api.Assertions.assertThat;
+// ============================================================
+// MockMvcBuilders + ControllerAdvice
+// ============================================================
+
+@org.junit.jupiter.api.extension.ExtendWith(MockitoExtension.class)
+class OrderControllerWebMvcTest {
+
+    private MockMvc mockMvc;
+
+    @Mock
+    private CreateOrderUseCase createOrderUseCase;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(new OrderController(
+                        createOrderUseCase,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null))
+                .setControllerAdvice(new ApiExceptionHandler())
+                .build();
+    }
+
+    @Test
+    void should_return_problem_detail_when_request_is_invalid() throws Exception {
+        mockMvc.perform(get("/api/orders/invalid"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.type").isNotEmpty());
+    }
+}
 
 // ============================================================
 // @SpringBootTest + Testcontainers + WebTestClient

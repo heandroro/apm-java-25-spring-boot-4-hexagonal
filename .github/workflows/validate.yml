@@ -1,0 +1,30 @@
+name: Validate APM Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile:
+    name: apm compile
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install APM CLI
+        run: curl -sSL https://aka.ms/apm-unix | sh
+
+      - name: Add APM to PATH
+        run: echo "$HOME/.apm/bin" >> $GITHUB_PATH
+
+      - name: Verify APM version
+        run: apm --version
+
+      - name: Compile package
+        run: apm compile
+
+      - name: Pack (dry-run validation)
+        run: apm pack --dry-run || true

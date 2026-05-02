@@ -35,6 +35,23 @@ Each skill follows a consistent structure:
 - **`scripts/`** — Maven/Gradle configuration snippets
 - **`references/`** — Concise technical documentation
 
+## Sub-skills
+
+When installed, each sub-skill is promoted to `.github/skills/<name>/SKILL.md` (and equivalent paths for `.claude/`, `.cursor/`, `.opencode/`) so AI tools can discover them independently.
+
+| Sub-skill | Purpose |
+|-----------|---------|
+| `best-practices` | Java 25 idioms, SOLID, Clean Code, Rich Domain, MapStruct, Streams, Virtual Threads, JSpecify |
+| `code-quality` | Static analysis with Checkstyle, SpotBugs, PMD, Error Prone, NullAway, SonarQube, Google Java Format |
+| `unit-test` | JUnit 6, Mockito 5, AssertJ, JaCoCo ≥ 90%, Instancio, DataFaker |
+| `integration-test` | Testcontainers, WireMock, Spring Boot Test, REST Assured, WebTestClient |
+| `arch-test` | ArchUnit architecture rules for hexagonal / ports-and-adapters layers |
+| `tuning` | JVM flags, GraalVM Native Image, Virtual Threads, HikariCP, Caffeine, Redis caching |
+| `stress-test` | Load testing with Gatling 4, JMH microbenchmarks, k6, SLA assertions |
+| `observability` | Actuator, Micrometer, Prometheus, OpenTelemetry, distributed tracing, structured logs |
+| `container` | Dockerfile multi-stage, Jib, Cloud Native Buildpacks, GraalVM Distroless, Kubernetes probes |
+| `local-test` | Docker Compose, Testcontainers Desktop, Spring Profiles, Spring Boot DevTools |
+
 The code review workflow for this package is defined in `.apm/prompts/review.prompt.md` and uses the detailed checklist in `.apm/skills/code-quality/references/quality-rules.md`.
 
 ## Tech Stack

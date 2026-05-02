@@ -18,15 +18,22 @@ It combines:
 - Specialized agents for quality, testing, performance, and DevOps concerns
 - Sub-skills under `.apm/skills/` that are promoted independently on install
 
-## Included Capabilities
+## Sub-skills
 
-- `best-practices` for Java 25 idioms, SOLID, Clean Code, and rich domain modeling
-- `code-quality` for static analysis and quality gates
-- `unit-test`, `integration-test`, and `arch-test` for testing strategy
-- `tuning` and `stress-test` for performance work
-- `observability` for metrics, tracing, and logging
-- `container` for Docker, Buildpacks, and deployment concerns
-- `local-test` for local environment and developer workflow support
+Each sub-skill is promoted to a top-level `.github/skills/<name>/` entry on install, making it independently discoverable.
+
+| Sub-skill | Purpose |
+|-----------|---------|
+| `best-practices` | Java 25 idioms, SOLID, Clean Code, Rich Domain, MapStruct, Streams, Virtual Threads, JSpecify |
+| `code-quality` | Static analysis with Checkstyle, SpotBugs, PMD, Error Prone, NullAway, SonarQube, Google Java Format |
+| `unit-test` | JUnit 6, Mockito 5, AssertJ, JaCoCo ≥ 90%, Instancio, DataFaker |
+| `integration-test` | Testcontainers, WireMock, Spring Boot Test, REST Assured, WebTestClient |
+| `arch-test` | ArchUnit architecture rules for hexagonal / ports-and-adapters layers |
+| `tuning` | JVM flags, GraalVM Native Image, Virtual Threads, HikariCP, Caffeine, Redis |
+| `stress-test` | Load testing with Gatling 4, JMH microbenchmarks, k6, SLA assertions |
+| `observability` | Actuator, Micrometer, Prometheus, OpenTelemetry, distributed tracing, structured logs |
+| `container` | Dockerfile multi-stage, Jib, Cloud Native Buildpacks, GraalVM Distroless, Kubernetes probes |
+| `local-test` | Docker Compose, Testcontainers Desktop, Spring Profiles, Spring Boot DevTools |
 
 ## How To Use
 
